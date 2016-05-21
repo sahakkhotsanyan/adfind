@@ -97,6 +97,24 @@ if(isset($_SERVER['argv'][1]) and isset($_SERVER['argv'][2])){
 		}
 	}
 }
+else if(isset($_SERVER['argv'][1])){
+	$action = $_SERVER['argv'][1];
+	if($action == "-h"){
+		echo '
+		Help:::
+		aviable commands 
+			>>>Commands<<<
+		adfind url php		Find PHP admin panels
+		adfind url asp		Find ASP admin panels
+		adfind url aspx		Find ASPX admin panels
+		adfind url js		Find JS admin panels
+		adfind url cfm		Find CFM admin panels
+		adfind url cgi		Find CGI admin panels
+		adfind url brf		Find BRF admin panels
+		adfind url all		Find all admin panels
+		';
+	}
+}
 else {
 	echo 'Usage "adfind http://example.com all" or "adfind -h" for more help';
 }
