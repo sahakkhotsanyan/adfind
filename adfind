@@ -114,7 +114,7 @@ else if(isset($_SERVER['argv'][1])){
 		adfind url brf			Find BRF  admin panels
 		adfind url all			Find all  admin panels
 		adfind -U, --update		    Update Programm
-		';
+';
 	}
 	else if($action == "-U" || $action == "--update"){
 		system("sudo cp /bin/adfind /bin/adfind1 && sudo curl -o /bin/adfind https://raw.githubusercontent.com/sahakkhotsanyan/adfind/master/adfind && sudo rm /bin/adfind");
