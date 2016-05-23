@@ -105,19 +105,19 @@ else if(isset($_SERVER['argv'][1])){
 		Help:::
 		aviable commands 
 				>>>Commands<<<
-		adfind url php			Find PHP admin panels
-		adfind url asp			Find ASP admin panels
+		adfind url php			Find PHP  admin panels
+		adfind url asp			Find ASP  admin panels
 		adfind url aspx			Find ASPX admin panels
-		adfind url js			Find JS admin panels
-		adfind url cfm			Find CFM admin panels
-		adfind url cgi			Find CGI admin panels
-		adfind url brf			Find BRF admin panels
-		adfind url all			Find all admin panels
-		adfind -U, --update		Update Programm
+		adfind url js			Find JS   admin panels
+		adfind url cfm			Find CFM  admin panels
+		adfind url cgi			Find CGI  admin panels
+		adfind url brf			Find BRF  admin panels
+		adfind url all			Find all  admin panels
+		adfind -U, --update		    Update Programm
 		';
 	}
 	else if($action == "-U" || $action == "--update"){
-		system("sudo rm /bin/adfind && sudo curl -o /bin/adfind https://raw.githubusercontent.com/sahakkhotsanyan/adfind/master/adfind");
+		system("sudo cp /bin/adfind /bin/adfind1 && sudo curl -o /bin/adfind https://raw.githubusercontent.com/sahakkhotsanyan/adfind/master/adfind && sudo rm /bin/adfind");
 	}
 }
 else {
