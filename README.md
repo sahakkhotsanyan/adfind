@@ -13,4 +13,4 @@ cd adfind*
 sudo cp adfind /bin/adfind
 sudo chmod +x /bin/adfind
 ##Usage
-adfind http://example.com
+adfind http://example.com all
