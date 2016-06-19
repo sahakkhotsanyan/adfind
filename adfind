@@ -1,6 +1,6 @@
 #! /bin/php
 <?php
-function run($array){
+function run($array,$siteurl){
 	for($i = 0;$i < count($array); $i++){
 		$url = $siteurl."/".$array[$i];
 		$headers = get_headers($url, 0);
@@ -21,34 +21,34 @@ if(isset($_SERVER['argv'][1]) and isset($_SERVER['argv'][2])){
 	);
 	switch($act2){
 		case "asp":
-			run($link["asp"]);
+			run($link["asp"],$siteurl);
 		break;
 		case "php":
-			run($link["php"]);
+			run($link["php"],$siteurl);
 		break;
 		case "cfm":
-			run($link["cfm"]);
+			run($link["cfm"],$siteurl);
 		break;
 		case "aspx":
-			run($link["aspx"]);
+			run($link["aspx"],$siteurl);
 		break;
 		case "js":
-			run($link["js"]);
+			run($link["js"],$siteurl);
 		break;
 		case "cgi":
-			run($link["cgi"]);
+			run($link["cgi"],$siteurl);
 		break;
 		case "brf":
-			run($link["brf"]);
+			run($link["brf"],$siteurl);
 		break;
 		case "all":
-			run($link["asp"]);
-			run($link["php"]);
-			run($link["cfm"]);
-			run($link["aspx"]);
-			run($link["js"]);
-			run($link["cgi"]);
-			run($link["brf"]);
+			run($link["asp"],$siteurl);
+			run($link["php"],$siteurl);
+			run($link["cfm"],$siteurl);
+			run($link["aspx"],$siteurl);
+			run($link["js"],$siteurl);
+			run($link["cgi"],$siteurl);
+			run($link["brf"],$siteurl);
 		break;
 	}
 }	
