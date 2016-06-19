@@ -112,7 +112,7 @@ else if(isset($_SERVER['argv'][1])){
 		adfind url cfm			Find CFM  admin panels
 		adfind url cgi			Find CGI  admin panels
 		adfind url brf			Find BRF  admin panels
-		adfind url all			Find all  admin panels
+		adfind url all			Find all the tips of  admin panels
 		adfind -U, --update		    Update Programm
 ';
 	}
