@@ -51,7 +51,7 @@ if(isset($_SERVER['argv'][1]) and isset($_SERVER['argv'][2])){
 			run($link["brf"]);
 		break;
 	}
-	
+}	
 else if(isset($_SERVER['argv'][1])){
 	$action = $_SERVER['argv'][1];
 	if($action == "-h"){
