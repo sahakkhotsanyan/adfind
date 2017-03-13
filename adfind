@@ -1,9 +1,11 @@
-#! /bin/php
+#! /usr/bin/php
 <?php
+$okay = [];
 function run($array,$siteurl){
 	for($i = 0;$i < count($array); $i++){
 		$url = $siteurl."/".urlencode($array[$i]);
 		$url = str_replace("%0A","",$url);
+		$url = str_replace("%0A","/",$url);
 		$headers = exec("curl -A \"Mozilla/5.0 (iPhone; U; CPU iPhone OS 4_3_3 like Mac OS X; en-us) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5\" -s -o /dev/null -I -w \"%{http_code}\" $url");
                 $headers = str_replace("%","",$headers);
 		echo $url." [".$headers."]\n";
