@@ -11,10 +11,20 @@ function run($array,$siteurl){
 		echo $url." [".$headers."]\n";
 		if($headers == "200") 
 		{
-			$okay[] = $url;		
+			$okay[] = $url;
+			echo "Admin Page Finded : --> ".$url."\nContinue? (Y/n) :";
+			$answer = trim(substr(fgets(STDIN), 0, (PHP_OS == 'WINNT' ? 2 : 1)));
+			if($answer == "" or strtolower($answer) == "y")
+			{
+				
+			}
+			else
+			{
+				die("Admin Page Finded: \n\t".implode($okay,"\n\t")." \n");
+			}		
 		}
 	}
-	print_r($okay);
+	echo "Admin Page Finded: \n\t".implode($okay,"\n\t")."\n";
 }
 if(isset($_SERVER['argv'][1]) and isset($_SERVER['argv'][2])){
 	$act2 = $_SERVER['argv'][2];
@@ -77,7 +87,7 @@ else if(isset($_SERVER['argv'][1])){
 		adfind url cgi			Find CGI  admin panels
 		adfind url brf			Find BRF  admin panels
 		adfind url all			Find all the tips of  admin panels
-		adfind -U, --update		    Update Programm
+		adfind -U, --update		    Update Programm		
 		Donate me to WebMoney "Z182464721258"
 ';
 	}
