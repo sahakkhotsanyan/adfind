@@ -75,7 +75,7 @@ else if(isset($_SERVER['argv'][1])){
 	$action = $_SERVER['argv'][1];
 	if($action == "-h"){
 		echo '
-		By Sahak Khotsanyan
+		By @sahag
 		Help:::
 		aviable commands 
 				>>>Commands<<<
@@ -89,6 +89,7 @@ else if(isset($_SERVER['argv'][1])){
 		adfind url all			Find all the tips of  admin panels
 		adfind -U, --update		    Update Programm		
 		Donate me to WebMoney "Z182464721258"
+		or Idram ID "136892811"
 ';
 	}
 	else if($action == "-U" || $action == "--update"){
@@ -96,6 +97,6 @@ else if(isset($_SERVER['argv'][1])){
 	}
 }
 else {
-	echo "Programm Maked By Sahak Khotsanyan \n".'Usage "adfind http://example.com all" or "adfind -h" for more help'."\nDonate me to Webmoney 'Z182464721258' \n";
+	echo "By @sahag \n".'Usage "adfind http://example.com all" or "adfind -h" for more help'."\nDonate me to Webmoney 'Z182464721258' or Idram ID '136892811' \n";
 }
 ?>
