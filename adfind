@@ -89,7 +89,7 @@ else if(argval("h")){
 		Help:::
 		-u --> URL of site {example: adfind -u http://example.com}
 		-t --> type of admin panel (default is all) {types: php , asp, aspx, js, cfm, cgi, brf. example:adfind -u http://example.com -t php}
-		-t --> this help menu
+		-h --> this help menu
 		---------------------------------------
 		Donate me to WebMoney "Z182464721258"
 		Idram ID "136892811"
