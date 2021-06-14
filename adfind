@@ -11,7 +11,7 @@ function argval($argname){
 	}
 	return false;
 }
-$okay = array();
+$panels = array();
 function run($array,$siteurl){
 	for($i = 0;$i < count($array); $i++){
 		$url = $siteurl."/".urlencode($array[$i]);
@@ -22,7 +22,7 @@ function run($array,$siteurl){
 		echo $url." [".$headers."]\n";
 		if($headers == "200")
 		{
-			$okay[] = $url;
+			$panels[] = $url;
 			echo "Admin Page Found : --> ".$url."\nContinue? (Y/n) :";
 			$answer = trim(substr(fgets(STDIN), 0, (PHP_OS == 'WINNT' ? 2 : 1)));
 			if($answer == "" or strtolower($answer) == "y")
@@ -72,13 +72,10 @@ if(argval("u") !== "yes" and argval("u")){
 			run($link["brf"],$siteurl);
 		break;
 		case "all":
-			run($link["php"],$siteurl);
-			run($link["asp"],$siteurl);
-			run($link["cfm"],$siteurl);
-			run($link["aspx"],$siteurl);
-			run($link["js"],$siteurl);
-			run($link["cgi"],$siteurl);
-			run($link["brf"],$siteurl);
+			foreach($link as $key => $val)
+			{
+			   run($val,$siteurl);
+			}
 		break;
 	}
 }
@@ -90,6 +87,7 @@ else if(argval("h")){
 		-u --> URL of site {example: adfind -u http://example.com}
 		-t --> type of admin panel (default is all) {types: php , asp, aspx, js, cfm, cgi, brf. example:adfind -u http://example.com -t php}
 		-h --> this help menu
+                -U , --update --> Update program
 		---------------------------------------
 		Donate me to WebMoney "Z182464721258"
 		Idram ID "136892811"
