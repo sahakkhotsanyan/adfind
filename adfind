@@ -31,11 +31,11 @@ function run($array,$siteurl){
 			}
 			else
 			{
-				die("Admin Page(s) Found: \n\t".implode($okay,"\n\t")." \n");
+				die("Admin Page(s) Found: \n\t".implode($panels,"\n\t")." \n");
 			}
 		}
 	}
-	echo "Admin Page(s) Found: \n\t".implode($okay,"\n\t")."\n";
+	echo "Admin Page(s) Found: \n\t".implode($panels,"\n\t")."\n";
 }
 if(argval("u") !== "yes" and argval("u")){
 	$act2 = (argval("t")) ? argval("t") : "all";
