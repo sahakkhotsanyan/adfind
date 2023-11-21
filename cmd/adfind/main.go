@@ -25,7 +25,7 @@ func main() {
 	flag.BoolVar(&verbose, "v", false, "verbose mode")
 	flag.BoolVar(&stop, "s", false, "stop when admin panel was found")
 	flag.Int64Var(&timeout, "to", 1000, "timeout for request in milliseconds")
-	flag.StringVar(&url, "u", "", "URL of site {example: adfind -u http://example.com -b ./ -t php}")
+	flag.StringVar(&url, "u", "", "URL of site {example: adfind -u https://example.com -t php}")
 	flag.StringVar(&basePath, "b", base, "base path of config files (default is /usr/share/adfind/)")
 	flag.StringVar(&adminType, "t", "all", "type of admin panel (default is all) {types: php , asp, aspx, js, cfm, cgi, brf. example:adfind -u http://example.com -t php}")
 	flag.BoolVar(&help, "h", false, "show this help")
