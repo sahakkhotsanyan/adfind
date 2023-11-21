@@ -1,19 +1,30 @@
 # adfind
 ## Admin Panel Finder<br />
-## Donate Us<br>
-### BTC: 1RL1NMsZfk7eszSrVKhJbBw6RJjFfAMwT
-### others in programm :))<br>
-### Depends php, curl
-## Installing php and git on arch
-#### sudo pacman -S php curl <br />
-#### sudo pacman -S git<br />
-## Installing php and git on debian
-#### sudo apt-get install php7.0-cli curl<br />
-#### sudo apt-get install git<br />
+## Depends golang
 ## installing adfind
 #### sudo git clone https://github.com/sahakkhotsanyan/adfind.git<br />
 #### cd adfind*<br />
-#### sudo cp adfind /bin/adfind<br />
-#### sudo chmod +x /bin/adfind<br />
+```bash
+go build cmd/adfind/adfind.go -o adfind
+```
 ## Usage
-#### adfind -u http://example.com<br />
+```text
+./adfind
+Usage of adfind
+  -b string
+        base path of config files (default is /usr/share/adfind/) (default "/usr/share/adfind/")
+  -h    show this help
+  -s    stop when admin panel was found
+  -t string
+        type of admin panel (default is all) {types: php , asp, aspx, js, cfm, cgi, brf. example:adfind -u http://example.com -t php} (default "all")
+  -to int
+        timeout for request in milliseconds (default 1000)
+  -u string
+        URL of site {example: adfind -u http://example.com}
+  -v    verbose mode
+```
+
+## Example
+```bash
+./adfind -u http://example.com -b ./ -t php
+```

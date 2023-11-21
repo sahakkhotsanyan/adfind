@@ -1,0 +1,8 @@
+word_lists:
+  php: wordlists/php.txt
+  asp: wordlists/asp.txt
+  aspx: wordlists/aspx.txt
+  js: wordlists/js.txt
+  cfm: wordlists/cfm.txt
+  cgi: wordlists/cgi.txt
+  brf: wordlists/brf.txt
