@@ -101,19 +101,18 @@ func (f *finder) processURI(uri, websiteType string) ([]string, error) {
 }
 
 func (f *finder) checkURI(uri string) (bool, error) {
-	resp := fasthttp.AcquireResponse()
-	err := f.fast.Get(uri, resp)
+	statusCode, err := f.fast.CheckURL(uri)
 	if err != nil {
 		return false, err
 	}
 
-	if resp.StatusCode() != fasthttp.StatusOK && resp.StatusCode() >= fasthttp.StatusBadRequest {
+	if statusCode != fasthttp.StatusOK && statusCode >= fasthttp.StatusBadRequest {
 		return false, nil
 	}
 
 	if f.stop {
 		var yn string
-		log.Infof("uri found: %s with status code %d", uri, resp.StatusCode())
+		log.Infof("uri found: %s with status code %d", uri, statusCode)
 		log.Infof("Do you want to continue? [y/n]")
 		_, err = fmt.Scan(&yn)
 		if err != nil {

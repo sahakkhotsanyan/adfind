@@ -9,6 +9,7 @@ import (
 
 type Client interface {
 	Get(uri string, resp *fasthttp.Response) error
+	CheckURL(uri string) (int, error)
 	Post(uri string, contentType string, body []byte, resp *fasthttp.Response) error
 }
 
@@ -51,6 +52,25 @@ func (c *client) Get(uri string, resp *fasthttp.Response) error {
 		return fmt.Errorf("failed to get %s: %w", uri, err)
 	}
 	return nil
+}
+
+// CheckURL checks if url is reachable
+func (c *client) CheckURL(uri string) (int, error) {
+	var body []byte
+	req := fasthttp.AcquireRequest()
+	req.SetRequestURI(uri)
+	req.Header.SetMethod(fasthttp.MethodGet)
+	req.Header.SetContentTypeBytes(contentTypeJSON)
+	req.Header.Set("Accept", "application/json")
+	code, _, err := c.client.Get(body, uri)
+	if err != nil {
+		return 0, err
+	}
+	fasthttp.ReleaseRequest(req)
+	if err != nil {
+		return 0, fmt.Errorf("failed to get %s: %w", uri, err)
+	}
+	return code, nil
 }
 
 // Post
