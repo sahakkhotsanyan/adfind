@@ -12,7 +12,7 @@ import (
 )
 
 var verbose, help, stop bool
-var url, adminType, basePath string
+var url, adminType, basePath, wordlist string
 var timeout int64
 
 const (
@@ -23,6 +23,7 @@ const (
 func main() {
 	initInfo()
 	flag.BoolVar(&verbose, "v", false, "verbose mode")
+	flag.StringVar(&wordlist, "w", "native", "wordlist for admin panel")
 	flag.BoolVar(&stop, "s", false, "stop when admin panel was found")
 	flag.Int64Var(&timeout, "to", 1000, "timeout for request in milliseconds")
 	flag.StringVar(&url, "u", "", "URL of site {example: adfind -u https://example.com -t php}")
@@ -54,7 +55,7 @@ func main() {
 
 	findProcessor := finder.NewFinder(fastClient, cfg, stop, basePath)
 
-	found, err := findProcessor.Find(url, adminType)
+	found, err := findProcessor.Find(url, adminType, wordlist)
 	if err != nil {
 		log.Fatal(err)
 	}

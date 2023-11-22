@@ -15,7 +15,7 @@ import (
 )
 
 type Finder interface {
-	Find(uri, websiteType string) ([]string, error)
+	Find(uri, websiteType, wordlist string) ([]string, error)
 }
 
 type finder struct {
@@ -34,13 +34,16 @@ func NewFinder(fast fast.Client, cfg *config.Config, stop bool, basePath string)
 	}
 }
 
-func (f *finder) Find(uri, websiteType string) ([]string, error) {
+func (f *finder) Find(uri, websiteType, wordlist string) ([]string, error) {
 	_, ok := f.cfg.WordLists[websiteType]
 	if !ok && websiteType != "all" {
 		return nil, errors.New("website type not found")
 	}
 	if websiteType != "all" {
 		return f.processURI(uri, websiteType)
+	}
+	if wordlist != "native" {
+		return f.processURIWithWordlist(uri, wordlist)
 	}
 	found := make([]string, 0)
 	for wsT := range f.cfg.WordLists {
@@ -55,11 +58,10 @@ func (f *finder) Find(uri, websiteType string) ([]string, error) {
 	return found, nil
 }
 
-func (f *finder) processURI(uri, websiteType string) ([]string, error) {
+func (f *finder) processURIWithWordlist(uri, wordlist string) ([]string, error) {
 	var err error
 	var ok bool
-	fName := f.cfg.GetWordListFileName(websiteType)
-	file, err := os.Open(f.base + fName)
+	file, err := os.Open(wordlist)
 	if err != nil {
 		return nil, err
 	}
@@ -98,6 +100,11 @@ func (f *finder) processURI(uri, websiteType string) ([]string, error) {
 	}
 
 	return found, err
+}
+
+func (f *finder) processURI(uri, websiteType string) ([]string, error) {
+	fName := f.cfg.GetWordListFileName(websiteType)
+	return f.processURIWithWordlist(uri, f.base+fName)
 }
 
 func (f *finder) checkURI(uri string) (bool, error) {
