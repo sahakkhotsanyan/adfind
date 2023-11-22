@@ -1,6 +1,13 @@
 # adfind
 ## Admin Panel Finder<br />
 ## Depends golang
+## Donations
+```text
+USDT (TRC20): TGsQfA2sUonM9UzKAYNavkCYdTNA74qaYK
+USDT (BEP20): 0xd03aa726709b9af614884127e8a7e1c1d80e71eb
+
+Thanks for your support!
+```
 ## installing adfind
 #### sudo git clone https://github.com/sahakkhotsanyan/adfind.git<br />
 #### cd adfind*<br />
