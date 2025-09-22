@@ -13,7 +13,7 @@ import (
 	"github.com/sahakkhotsanyan/adfind/pkg/finder"
 )
 
-var verbose, help, stop bool
+var verbose, veryVerbose, help, stop bool
 var url, adminType, basePath, wordlist string
 var timeout int64
 
@@ -54,6 +54,7 @@ var headers headerList
 func main() {
 	initInfo()
 	flag.BoolVar(&verbose, "v", false, "verbose mode")
+	flag.BoolVar(&veryVerbose, "vv", false, "very verbose verbose mode")
 	flag.StringVar(&wordlist, "w", "native", "wordlist for admin panel")
 	flag.BoolVar(&stop, "s", false, "stop when admin panel was found")
 	flag.Int64Var(&timeout, "to", 1000, "timeout for request in milliseconds")
@@ -74,6 +75,10 @@ func main() {
 
 	if verbose {
 		log.SetLevel(log.DebugLevel)
+	}
+
+	if veryVerbose {
+		log.SetLevel(log.TraceLevel)
 	}
 
 	cfg, err := config.NewConfig(basePath + configFile)

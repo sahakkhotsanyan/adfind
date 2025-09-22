@@ -108,7 +108,7 @@ func (f *finder) processURI(uri, websiteType string) ([]string, error) {
 }
 
 func (f *finder) checkURI(uri string) (bool, error) {
-	statusCode, err := f.fast.CheckURL(uri)
+	statusCode, body, err := f.fast.CheckURL(uri)
 	if err != nil {
 		return false, err
 	}
@@ -116,6 +116,8 @@ func (f *finder) checkURI(uri string) (bool, error) {
 	if statusCode != fasthttp.StatusOK && statusCode >= fasthttp.StatusBadRequest {
 		return false, nil
 	}
+
+	log.Tracef("response body: %s", string(body))
 
 	if f.stop {
 		var yn string

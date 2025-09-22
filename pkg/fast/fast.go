@@ -10,7 +10,7 @@ import (
 
 type Client interface {
 	Get(uri string, resp *fasthttp.Response) error
-	CheckURL(uri string) (int, error)
+	CheckURL(uri string) (int, []byte, error)
 	Post(uri string, contentType string, body []byte, resp *fasthttp.Response) error
 	SetCustomHeaders(headers map[string]string)
 }
@@ -60,7 +60,7 @@ func (c *client) Get(uri string, resp *fasthttp.Response) error {
 }
 
 // CheckURL checks if url is reachable
-func (c *client) CheckURL(uri string) (int, error) {
+func (c *client) CheckURL(uri string) (int, []byte, error) {
 	req := fasthttp.AcquireRequest()
 	req.SetRequestURI(uri)
 	resp := fasthttp.AcquireResponse()
@@ -72,9 +72,9 @@ func (c *client) CheckURL(uri string) (int, error) {
 	err := c.client.DoRedirects(req, resp, 10)
 	fasthttp.ReleaseRequest(req)
 	if err != nil {
-		return 0, fmt.Errorf("failed to get %s: %w", uri, err)
+		return 0, nil, fmt.Errorf("failed to get %s: %w", uri, err)
 	}
-	return resp.StatusCode(), nil
+	return resp.StatusCode(), resp.Body(), nil
 }
 
 // Post
