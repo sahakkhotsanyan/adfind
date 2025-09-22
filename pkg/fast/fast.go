@@ -2,6 +2,7 @@ package fast
 
 import (
 	"fmt"
+	"sync"
 	"time"
 
 	"github.com/valyala/fasthttp"
@@ -11,11 +12,14 @@ type Client interface {
 	Get(uri string, resp *fasthttp.Response) error
 	CheckURL(uri string) (int, error)
 	Post(uri string, contentType string, body []byte, resp *fasthttp.Response) error
+	SetCustomHeaders(headers map[string]string)
 }
 
 type client struct {
-	client      *fasthttp.Client
-	readTimeout time.Duration
+	client        *fasthttp.Client
+	readTimeout   time.Duration
+	customHeaders map[string]string
+	headersMutex  sync.Mutex
 }
 
 var contentTypeJSON = []byte("application/json")
@@ -46,7 +50,8 @@ func (c *client) Get(uri string, resp *fasthttp.Response) error {
 	req.Header.SetMethod(fasthttp.MethodGet)
 	req.Header.SetContentTypeBytes(contentTypeJSON)
 	req.Header.Set("Accept", "application/json")
-	err := c.client.Do(req, resp)
+	c.addCustomHeaders(req)
+	err := c.client.DoRedirects(req, resp, 10)
 	fasthttp.ReleaseRequest(req)
 	if err != nil {
 		return fmt.Errorf("failed to get %s: %w", uri, err)
@@ -56,21 +61,20 @@ func (c *client) Get(uri string, resp *fasthttp.Response) error {
 
 // CheckURL checks if url is reachable
 func (c *client) CheckURL(uri string) (int, error) {
-	var body []byte
 	req := fasthttp.AcquireRequest()
 	req.SetRequestURI(uri)
+	resp := fasthttp.AcquireResponse()
+	defer fasthttp.ReleaseResponse(resp)
 	req.Header.SetMethod(fasthttp.MethodGet)
 	req.Header.SetContentTypeBytes(contentTypeJSON)
+	c.addCustomHeaders(req)
 	req.Header.Set("Accept", "application/json")
-	code, _, err := c.client.Get(body, uri)
-	if err != nil {
-		return 0, err
-	}
+	err := c.client.DoRedirects(req, resp, 10)
 	fasthttp.ReleaseRequest(req)
 	if err != nil {
 		return 0, fmt.Errorf("failed to get %s: %w", uri, err)
 	}
-	return code, nil
+	return resp.StatusCode(), nil
 }
 
 // Post
@@ -82,6 +86,7 @@ func (c *client) Post(uri string, contentType string, body []byte, resp *fasthtt
 	req.SetRequestURI(uri)
 	req.Header.SetMethod(fasthttp.MethodPost)
 	req.Header.SetContentTypeBytes([]byte(contentType))
+	c.addCustomHeaders(req)
 	req.SetBodyRaw(body)
 	err := c.client.DoTimeout(req, resp, reqTimeout)
 	fasthttp.ReleaseRequest(req)
@@ -90,4 +95,19 @@ func (c *client) Post(uri string, contentType string, body []byte, resp *fasthtt
 		return fmt.Errorf("failed to post %s: %w", uri, err)
 	}
 	return nil
+}
+
+// SetCustomHeaders sets custom headers to be added to each request
+func (c *client) SetCustomHeaders(headers map[string]string) {
+	c.headersMutex.Lock()
+	defer c.headersMutex.Unlock()
+	c.customHeaders = headers
+}
+
+func (c *client) addCustomHeaders(req *fasthttp.Request) {
+	c.headersMutex.Lock()
+	defer c.headersMutex.Unlock()
+	for k, v := range c.customHeaders {
+		req.Header.Set(k, v)
+	}
 }
