@@ -5,6 +5,7 @@ import (
 	"sync"
 	"time"
 
+	log "github.com/sirupsen/logrus"
 	"github.com/valyala/fasthttp"
 )
 
@@ -51,7 +52,9 @@ func (c *client) Get(uri string, resp *fasthttp.Response) error {
 	req.Header.SetContentTypeBytes(contentTypeJSON)
 	req.Header.Set("Accept", "application/json")
 	c.addCustomHeaders(req)
+	c.logRequestTrace(req)
 	err := c.client.DoRedirects(req, resp, 10)
+	c.logResponseTrace(resp)
 	fasthttp.ReleaseRequest(req)
 	if err != nil {
 		return fmt.Errorf("failed to get %s: %w", uri, err)
@@ -69,7 +72,15 @@ func (c *client) CheckURL(uri string) (int, []byte, error) {
 	req.Header.SetContentTypeBytes(contentTypeJSON)
 	c.addCustomHeaders(req)
 	req.Header.Set("Accept", "application/json")
+	log.Tracef("checking url: %s", uri)
+	log.Tracef("client: %+v", c.client)
+	log.Tracef("request: %+v", req)
+	log.Tracef("response: %+v", resp)
+	log.Tracef("doing request...")
 	err := c.client.DoRedirects(req, resp, 10)
+	log.Tracef("request done")
+	log.Tracef("response headers: %s", resp.Header.String())
+	log.Tracef("response body: %s", string(resp.Body()))
 	fasthttp.ReleaseRequest(req)
 	if err != nil {
 		return 0, nil, fmt.Errorf("failed to get %s: %w", uri, err)
@@ -88,13 +99,25 @@ func (c *client) Post(uri string, contentType string, body []byte, resp *fasthtt
 	req.Header.SetContentTypeBytes([]byte(contentType))
 	c.addCustomHeaders(req)
 	req.SetBodyRaw(body)
+	c.logRequestTrace(req)
 	err := c.client.DoTimeout(req, resp, reqTimeout)
+	c.logResponseTrace(resp)
 	fasthttp.ReleaseRequest(req)
 
 	if err != nil {
 		return fmt.Errorf("failed to post %s: %w", uri, err)
 	}
 	return nil
+}
+
+func (c *client) logRequestTrace(req *fasthttp.Request) {
+	log.Tracef("request headers: %s", req.Header.String())
+	log.Tracef("request body: %s", string(req.Body()))
+}
+
+func (c *client) logResponseTrace(resp *fasthttp.Response) {
+	log.Tracef("response headers: %s", resp.Header.String())
+	log.Tracef("response body: %s", string(resp.Body()))
 }
 
 // SetCustomHeaders sets custom headers to be added to each request
